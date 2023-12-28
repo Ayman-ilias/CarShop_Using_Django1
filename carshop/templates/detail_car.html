@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+<div class="col-12 mb-3">
+    <div class="card m-2">
+        <div class="card-body" style="background-color: lightcyan;">
+            <img class="img-fluid mx-auto d-block" src="{{car.image.url}}" alt="">
+            <h1 class="card-title">{{ car.name }}</h1>
+            <strong>Brand :
+
+                <button class="btn btn-outline-success btn-sm m-2">{{ car.brand }}</button></strong>
+              <p class="card-text">{{ car.details}}</p>
+              <strong class="card-text">Color: {{ car.color }}</strong>
+              <h5 class="card-text">Price: ${{ car.price }}M</h5>
+              <h5 class="card-text">Quantity: {% if car.quantity > 0 %}{{ car.quantity }}{% else %}Currently Out Of Stock{% endif %}</h5>
+
+              {% if request.user.is_authenticated %}
+                           
+                            {% if post.quantity != 0 %}
+                            <a href="{% url 'buy' car.id %}" class="btn btn-warning">Buy Now</a>
+                            {% else %}
+                            <p>----Not Available Now---</p>
+                            {% endif %}
+                              
+                            {% else %}
+                         
+                            <a href="{% url 'user_login' %}" class="btn btn-danger text-center btn-sm">Sign in To Purchase</a>
+                            
+
+                            {% endif %}
+        </div>
+    </div> 
+    <div class="text-center">
+      <strong class="mt-2">Total Comments: {{ comments | length }}</strong>
+    </div>
+    {% for comment in comments %}
+<div class="row justify-content-center">
+  
+    <div class="col-md-6 mx-auto">
+      <div class="card m-2">
+        <div class="card-body" style="background-color: lightseagreen;">
+          <div class="d-flex justify-content-between align-items-center">
+            <strong class="text-dark">{{ comment.name }}</strong>
+            <strong>{{ comment.created_on|date:"F d, Y" }} || {{ comment.created_on|time:"g:i A" }}</strong>
+          </div>
+          <p>{{ comment.body }}</p>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+<div class="card m-2">
+    <div class="card-body">
+        <h1>Add Comments</h1>
+        <form method="post"">
+            {% csrf_token %}
+            {{ comment_form | crispy }}
+            <button type="submit" class="btn btn-warning">Send</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

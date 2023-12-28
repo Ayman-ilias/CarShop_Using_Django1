@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-center">
+    <div class="border p-3 d-inline-block" style="background-color: lightcyan;">
+        <h2 class="m-0">My Profile Page</h2>
+    </div>
+</div>
+
+<div class="text-center mt-4">
+ <a href="{% url 'edit_profile' %}" class="btn btn-success btn-lg mx-2">Update Your Profile</a>
+ <a href="{% url 'pass_change' %}" class="btn btn-success btn-lg mx-2">Change Password</a>
+</div>
+
+<div class="text-center">
+    <div class="border p-3 d-inline-block mb-2 mt-3" style="background-color:lightgray; border-radius: 10px;"> 
+        <h2 class="m-0">My Cars</h2>
+    </div>
+</div>
+
+<table class="table mx-5 mb-3">
+ <thead>
+    <tr>
+      <th scope="col">Car Model</th>
+      <th scope="col">Price</th>
+      <th scope="col">Purchase Date</th>
+      <th scope="col">Brand</th>
+      <th scope="col">Check</th>
+    </tr>
+ </thead>
+ <tbody>
+    {% for purchase in purchases %}
+    <tr">
+      <td>{{ purchase.car.name }}</td>
+      <td>{{ purchase.car.price }}</td>
+      <td>{{ purchase.purchase_date }}</td>
+      <td>{{ purchase.brand }}</td>
+      <td>
+        <button class="btn btn-sm btn-success">Click to View</button>
+      </td>
+      
+    </tr>
+    {% endfor %}
+ </tbody>
+</table>
+
+{% endblock content %}

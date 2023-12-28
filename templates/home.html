@@ -1,0 +1,130 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+<div class="siuu mb-5">
+    <div class="container mt-5">
+        <div class="row d-flex align-items-center">
+          
+          <div class="col-md-6">
+            <h2 class="text-center">Welcome to Car Lagbe</h2>
+<p class="text-center">
+    Discover the Pinnacle of Driving Excellence!
+
+    At Car Lagbe, your premier destination for automotive excellence, we bring you a curated collection of exceptional cars from renowned brands. Whether you're a fan of classic elegance or cutting-edge performance, we have a car to match your style.
+
+    Explore our extensive lineup featuring iconic brands such as BMW, Toyota, Ferrari, Audi, Porsche, Rolls Royce, Pagani, and more. From timeless classics to the latest in automotive innovation, we cater to every car enthusiast's dream.
+
+    Embark on a journey with us and find the perfect blend of sophistication, power, and style. Your dream car awaits at Car Lagbe!
+</p>
+          </div>
+      
+          
+          <div class="col-md-6">
+            <img src="{% static 'cars.jpg' %}" alt="Image" class="img-fluid mx-auto d-block rounded-end-circle">
+          </div>
+        </div>
+      </div>
+        
+</div>
+
+
+<div class="container mt-5 mb-5">
+    <div class="row">
+       
+        <div class="col-md-6">
+            
+            <img src="{% static 'carsd.jfif' %}" class="img-fluid rounded-start-circle" alt="Car Showroom">
+        </div>
+        
+        
+        <div class="col-md-6 text-center">
+            <h3>About Us</h3>
+            <p>
+                Car Lagbe is more than just a car dealership; we are enthusiasts dedicated to providing you with an extraordinary automotive experience. Our commitment goes beyond selling cars; we aim to create lasting relationships with our customers by delivering top-notch service and ensuring satisfaction at every step.
+            </p>
+            <p>
+                With a passion for both classic and modern automobiles, we have carefully curated our collection to cater to diverse tastes and preferences. Whether you are in search of a timeless classic or the latest supercar, Car Lagbe is your trusted partner in finding the perfect vehicle to match your lifestyle.
+            </p>
+            <p>
+                Experience the epitome of automotive luxury and performance with Car Lagbe. Join us on a journey where your dream car becomes a reality.
+            </p>
+        </div>
+    </div>
+</div>
+    
+<div class="">
+    <div class=" text-center">
+        
+        <div class="text-center">
+            <div class="border p-3 d-inline-block mb-3" style="background-color: lightskyblue">
+                <h2 class="m-0">Find Your Car</h2>
+            </div>
+        </div>
+        <a href="{% url 'home' %}" class="btn btn-outline-dark btn-sm">
+            All
+        </a>
+
+        {% for cat in catagory %}
+            <a href="{% url 'catagory_wise_post' cat.slug %}" class="btn btn-outline-dark btn-sm">
+                {{cat.name}}
+            </a>
+           
+            {% endfor %}
+            <br>
+            <h4 class="text-success text-center mt-4">{{data | length}} cars found</h4>
+
+            
+        
+    </div>
+    <div class="">
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+            
+                {% for post in data %}
+                  
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                          <img src="{{ post.image.url }}" class="card-img-top" alt="...">
+
+                            <h5 class="card-title"><a href="{% url 'detail_car' post.id %}" class="text-decoration-none text-dark">{{ post.name }}</a></h5>
+                            <strong>Brand :
+
+                              <button class="btn btn-outline-success btn-sm m-2">{{ post.brand }}</button></strong>
+                            <p class="card-text">{{ post.details | truncatewords:15 }}</p>
+                            <strong class="card-text">Color: {{ post.color }}</strong>
+                            <h5 class="card-text">Price: ${{ post.price }}M</h5>
+                            <h5 class="card-text">Quantity: {% if post.quantity > 0 %}{{ post.quantity }}{% else %}Not Available{% endif %}</h5>
+                        </div>
+                        <div class="card-footer d-flex" style="gap: 10px;">
+                            <a href="{% url 'detail_car' post.id %}" class="btn btn-warning">Details</a>
+                            {% if request.user.is_authenticated %}
+                           
+                            {% if post.quantity != 0 %}
+                            <a href="{% url 'buy' post.id %}" class="btn btn-warning">Buy Now</a>
+                            {% else %}
+                            <p>----Not Available Now---</p>
+                            {% endif %}
+                              
+                            {% else %}
+                         
+                            <a href="{% url 'user_login' %}" class="btn btn-danger text-center btn-sm">Sign in To Purchase</a>
+                            
+
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+        
+                {% endfor %}
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
